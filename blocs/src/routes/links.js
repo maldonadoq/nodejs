@@ -2,17 +2,19 @@ const express = require('express');
 const router = express.Router();
 
 const db = require('../database');
+const { isLoggedInI } = require('../lib/auth');
 
-router.get('/add', (req, res) => {
+router.get('/add', isLoggedInI, (req, res) => {
   res.render('links/add');
 });
 
-router.post('/add', async (req, res) => {
+router.post('/add', isLoggedInI, async (req, res) => {
   const { title, url, description } = req.body;
   const newlink = {
     title,
     url,
-    description
+    description,
+    user_id: req.user.id
   };
 
   await db.query('insert into links set ?', [newlink]);
@@ -20,12 +22,12 @@ router.post('/add', async (req, res) => {
   res.redirect('/links');
 });
 
-router.get('/', async (req, res) => {
-  const links = await db.query('select *from links');
+router.get('/', isLoggedInI, async (req, res) => {
+  const links = await db.query('select *from links where user_id = ?', [req.user.id]);
   res.render('links/list', {links})
 });
 
-router.get('/delete/:id', async (req, res) => {
+router.get('/delete/:id', isLoggedInI, async (req, res) => {
   const { id } = req.params;
 
   await db.query('delete from links where id=?', [id]);
@@ -33,13 +35,13 @@ router.get('/delete/:id', async (req, res) => {
   res.redirect('/links');
 });
 
-router.get('/edit/:id', async (req, res) => {
+router.get('/edit/:id', isLoggedInI, async (req, res) => {
   const { id } = req.params;
   const links = await db.query('select * from links where id = ?', [id]);
   res.render('links/edit', {link: links[0]});
 });
 
-router.post('/edit/:id', async (req, res) => {
+router.post('/edit/:id', isLoggedInI, async (req, res) => {
   const { id } = req.params;
   const { title, description, url } = req.body;
   const newlink = {
