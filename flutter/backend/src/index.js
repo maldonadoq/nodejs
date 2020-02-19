@@ -6,8 +6,8 @@ async function main(){
 	await connect();
 
 	// express application
-  await app.listen(4000);
-  console.log('Server on Port 4000');
+	await app.listen(4000, '192.168.0.10');
+	console.log('Server on Port 4000');
 }
 
 main();
