@@ -21,7 +21,8 @@ app.use(express.urlencoded({extended: false}));
 // Global Variables
 
 // Routes
-app.use(require('./routes/routes'));
+app.use(require('./routes/index.routes'));
+app.use(require('./routes/notes.routes'));
 
 // Static Files
 app.use(express.static(path.join(__dirname, 'public')));
