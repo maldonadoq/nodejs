@@ -1,11 +1,11 @@
 const { Schema, model } = require('mongoose');
 
 const NoteScheme = new Schema({
-    title = {
+    title: {
         type: String,
         required: true
     },
-    description = {
+    description: {
         type: String,
         require: true
     }
