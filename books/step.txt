@@ -18,3 +18,7 @@ Server update:
 
 Init Backend Server
     - npx nodemon backend/index.js
+    - npm run dev
+
+Manjaro:
+    - systemctl start mongodb.service
